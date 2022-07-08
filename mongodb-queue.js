@@ -82,12 +82,16 @@ Queue.prototype.add = function(payload, opts, callback) {
             msgs.push({
                 visible  : visible,
                 payload  : payload,
+                createdAt: new Date(),
+                updatedAt: new Date()
             })
         })
     } else {
         msgs.push({
             visible  : visible,
             payload  : payload,
+            createdAt: new Date(),
+            updatedAt: new Date()
         })
     }
 
@@ -111,13 +115,14 @@ Queue.prototype.get = function(opts, callback) {
         visible : { $lte : now() },
     }
     var sort = {
-        _id : 1
+        updatedAt : 1
     }
     var update = {
         $inc : { tries : 1 },
         $set : {
             ack     : id(),
             visible : nowPlusSecs(visibility),
+            updatedAt: new Date()
         }
     }
 
